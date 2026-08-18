@@ -788,11 +788,13 @@ static std::string devicesRequest(eHyprCtlOutputFormat format, std::string reque
         "active_keymap": "{}",
         "capsLock": {},
         "numLock": {},
-        "main": {}
+        "main": {},
+        "enabled": {}
     }},)#",
                 rc<uintptr_t>(k.get()), escapeJSONStrings(k->m_hlName), escapeJSONStrings(k->m_currentRules.rules), escapeJSONStrings(k->m_currentRules.model),
                 escapeJSONStrings(k->m_currentRules.layout), escapeJSONStrings(k->m_currentRules.variant), escapeJSONStrings(k->m_currentRules.options), KI, escapeJSONStrings(KM),
-                (getModState(k, XKB_MOD_NAME_CAPS) ? "true" : "false"), (getModState(k, XKB_MOD_NAME_NUM) ? "true" : "false"), (k->m_active ? "true" : "false"));
+                (getModState(k, XKB_MOD_NAME_CAPS) ? "true" : "false"), (getModState(k, XKB_MOD_NAME_NUM) ? "true" : "false"), (k->m_active ? "true" : "false"),
+                (k->m_enabled ? "true" : "false"));
         }
 
         trimTrailingComma(result);
@@ -881,10 +883,10 @@ static std::string devicesRequest(eHyprCtlOutputFormat format, std::string reque
             const auto KM        = k->getActiveLayout();
             result += std::format("\tKeyboard at {:x}:\n\t\t{}\n\t\t\trules: r \"{}\", m \"{}\", l \"{}\", v \"{}\", o \"{}\"\n\t\t\tactive layout index: {}\n\t\t\tactive keymap: "
                                   "{}\n\t\t\tcapsLock: "
-                                  "{}\n\t\t\tnumLock: {}\n\t\t\tmain: {}\n",
+                                  "{}\n\t\t\tnumLock: {}\n\t\t\tmain: {}\n\t\t\tenabled: {}\n",
                                   rc<uintptr_t>(k.get()), k->m_hlName, k->m_currentRules.rules, k->m_currentRules.model, k->m_currentRules.layout, k->m_currentRules.variant,
                                   k->m_currentRules.options, KI, KM, (getModState(k, XKB_MOD_NAME_CAPS) ? "yes" : "no"), (getModState(k, XKB_MOD_NAME_NUM) ? "yes" : "no"),
-                                  (k->m_active ? "yes" : "no"));
+                                  (k->m_active ? "yes" : "no"), (k->m_enabled ? "yes" : "no"));
         }
 
         result += "\n\nTablets:\n";
